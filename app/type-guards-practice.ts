@@ -105,3 +105,75 @@ console.log(formatValue(122131.52454235));
 // dodatkowo: jeśli wynik to ProcedureResult, wypisuje też każdy krok osobno (steps.forEach(...))
 
 // 4. Tablicę testową results: SearchResult[] z przynajmniej jednym przykładem każdego typu i wywołaj processResults(results)
+
+interface DocumentResult {
+    kind: 'document',
+    title: string,
+    fileUrl: string,
+    pageCount: number
+}
+
+interface FaqResult {
+    kind: 'faq',
+    question: string,
+    answer: string
+}
+
+interface ProcedureResult {
+    kind: 'procedure',
+    title: string,
+    steps: string[]
+}
+
+type SearchResult = DocumentResult | FaqResult | ProcedureResult;
+
+function getSummary(result: SearchResult): string {
+
+    switch (result.kind) {
+        
+        case 'document' : 
+            return `Dokument: ${result.title} (${result.pageCount} stron)`
+
+        case 'faq' : 
+            return `FAQ: ${result.question}`
+
+        case 'procedure' :
+            return `Procedura: ${result.title} (${result.steps.length} kroków)`
+    }
+}
+
+function processResults(results: SearchResult[]): void {
+
+    results.forEach((result) => {
+        
+        console.log(getSummary(result));
+
+        if (result.kind === 'procedure') {
+            result.steps.forEach(step => console.log(step))
+        }
+
+    })
+}
+
+const results: SearchResult[] = [
+    {
+        kind: 'document',
+        title: 'Tytul dokumentu',
+        fileUrl: 'url do dokumentu',
+        pageCount: 299
+    },
+
+    {
+        kind: 'faq',
+        question: 'pytanie testowe',
+        answer: 'odpowiedz testowa'
+    },
+
+    {
+        kind: 'procedure',
+        title: 'Niezbednik procedur biurowych',
+        steps: ['wlaczyc kompa', 'zrobic kawe', 'pracowac do 18']
+    }
+]
+
+processResults(results);
