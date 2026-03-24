@@ -81,3 +81,27 @@ function isTenant(user: Tenant | Admin): user is Tenant {
 
 console.log(formatValue('elo'));
 console.log(formatValue(122131.52454235));
+
+// 🎯 Zadanie dodatkowe — SearchResult
+// W Smart Knowledge Base użytkownicy będą wyszukiwać informacje. Wyniki wyszukiwania mogą być różnego typu — dokument PDF, wpis FAQ, lub procedura. Każdy typ ma inne pola.
+// Utwórz plik app/search-practice.ts i napisz:
+// 1. Trzy interfejsy wyników wyszukiwania z discriminated union na polu kind:
+
+// DocumentResult — kind: "document", title: string, fileUrl: string, pageCount: number
+// FaqResult — kind: "faq", question: string, answer: string
+// ProcedureResult — kind: "procedure", title: string, steps: string[]
+
+// Utwórz typ SearchResult = DocumentResult | FaqResult | ProcedureResult
+// 2. Funkcję getSummary(result: SearchResult): string używając switch po kind:
+
+// dla dokumentu: "Dokument: [title] ([pageCount] stron)"
+// dla FAQ: "FAQ: [question]"
+// dla procedury: "Procedura: [title] ([liczba kroków] kroków)"
+
+// 3. Funkcję processResults(results: SearchResult[]): void która:
+
+// iteruje po tablicy wyników
+// dla każdego wywołuje getSummary i wypisuje w konsoli
+// dodatkowo: jeśli wynik to ProcedureResult, wypisuje też każdy krok osobno (steps.forEach(...))
+
+// 4. Tablicę testową results: SearchResult[] z przynajmniej jednym przykładem każdego typu i wywołaj processResults(results)
