@@ -10,41 +10,44 @@
 // Funkcję filterByCategory — przyjmuje Tenant[] i category: Category, zwraca Tenant[]. 
 // To nie musi być generyczna (typ jest konkretny) — ale zastanów się dlaczego, i napisz komentarz w kodzie z odpowiedzią.
 
-import { tenants, Tenant, Category } from "./types-practice";
+import { tenants } from "./types-practice.js";
 
 function getById<T extends {id: string}> (elements: T[], id: string): T | undefined {
     return elements.find(element => element.id === id )
 }
 
-interface ApiResponse<T> {
-    data: T,
-    status: number,
-    message: string,
-}
+// type Category = "fashion" | "food" | "electronics" | "services"
 
-const example1: ApiResponse<Tenant[]> = {
-    data: tenants,
-    status: 404,
-    message: 'Testowa zmienna'
-}
+// interface Tenant {
+//     id: string;
+//     name: string;
+//     mallId: string;
+//     floor: number;
+//     category: Category;
+// }
 
-const example2: ApiResponse<Tenant> = {
-    data: {
-        id: '4',
-        name: "KFC",
-        mallId: '112',
-        floor: 3,
-        category: 'food',
-    },
-    status: 300,
-    message: 'testowa zmienna z data tenant'
-}
+// const tenantss: Tenant[] = [
+//     {
+//         id: '1',
+//         name: "Nike",
+//         mallId: '33',
+//         floor: 1,
+//         category: 'fashion',
+//     }, 
+//     {
+//         id: '2',
+//         name: 'Adidas',
+//         mallId: '54',
+//         floor: 0,
+//         category: 'fashion',
+//     }, 
+//     {
+//         id: '3',
+//         name: 'McDonalds',
+//         mallId: '110',
+//         floor: 2,
+//         category: 'food',
+//     },
+// ]
 
 console.log(getById(tenants, '2'));
-
-function filterByCategory (tenants: Tenant[], category: Category): Tenant[] {
-    return tenants.filter(tenant => tenant.category === category);
-}
-//funkcja nie musi być generyczna poniewaz zawsze zwroci ona element tablicy Tenant[], gdzie dokladnie wiemy jakie dane beda zwracane bo wczesniej deklarowalismy interface
-
-console.log(filterByCategory(tenants, 'food'));
