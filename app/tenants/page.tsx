@@ -1,4 +1,5 @@
 import { TenantCounter } from "../components/TenantCounter";
+import { AddTenantForm } from "../components/AddTenantForm";
 import Link from "next/link";
 
 interface Tenant {
@@ -19,6 +20,9 @@ export default async function TenantsPage(){
 
     return (
         <main>
+            <h1>Dodaj nowego najemcę:</h1>
+            <AddTenantForm/>
+            <br></br>
             <TenantCounter/>
             <h1>Lista najemców:</h1>
             <ul>
