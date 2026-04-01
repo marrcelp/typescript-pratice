@@ -1,7 +1,8 @@
 import { TenantCounter } from "../components/TenantCounter";
+import Link from "next/link";
 
-interface User {
-    id: number,
+interface Tenant {
+    id: string,
     name: string,
 }
 
@@ -21,7 +22,7 @@ export default async function TenantsPage(){
             <TenantCounter/>
             <h1>Lista najemców:</h1>
             <ul>
-                {tenants.map((tenant: User) => <li key={tenant.id}> {tenant.name} </li> )}
+                {tenants.map((tenant: Tenant) => <li key={tenant.id}><Link href={`/tenants/${tenant.id}`}>{tenant.name}</Link></li> )}
             </ul>
         </main>
     )

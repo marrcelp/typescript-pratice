@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
+import { Nav } from "./components/Nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,11 +30,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <nav>
-          <Link href="/">Home</Link>
-          {" | "}
-          <Link href="/tenants">Tenants</Link>
-        </nav>
+        <Nav/>
         {children}
       </body>
     </html>
