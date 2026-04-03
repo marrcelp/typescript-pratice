@@ -32,7 +32,7 @@ export async function GET (request: NextRequest, {params}: {params: Promise<{id:
 // Co jeśli DELETE się nie uda? Dodaj prosty komunikat błędu — np. useState z tekstem który pojawia się gdy !response.ok.
 // Pokaż mi kod gdy będziesz gotowy! 🚀
 
-export async function DELETE (request: NextRequest, {params}: {params: Promise<{id: string}}) {
+export async function DELETE (request: NextRequest, {params}: {params: Promise<{id: string}>}) {
     const {id} = await params;
     const tenant = tenants.find(tenant => tenant.id === id);
 
