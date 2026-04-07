@@ -1,6 +1,7 @@
 import { TenantCounter } from "../components/TenantCounter";
 import { AddTenantForm } from "../components/AddTenantForm";
 import Link from "next/link";
+import { DeleteTenantButton } from "../components/DeleteTenantButton";
 
 interface Tenant {
     id: string,
@@ -26,7 +27,7 @@ export default async function TenantsPage(){
             <TenantCounter/>
             <h1>Lista najemców:</h1>
             <ul>
-                {tenants.map((tenant: Tenant) => <li key={tenant.id}><Link href={`/tenants/${tenant.id}`}>{tenant.name}</Link></li> )}
+                {tenants.map((tenant: Tenant) => <li key={tenant.id}><Link href={`/tenants/${tenant.id}`}>{tenant.name}</Link> <DeleteTenantButton id={tenant.id} /></li> )}
             </ul>
         </main>
     )
