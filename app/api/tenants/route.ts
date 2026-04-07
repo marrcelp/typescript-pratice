@@ -16,12 +16,7 @@
 // Zaktualizuj app/tenants/page.tsx — zamiast JSONPlaceholder pobieraj dane z własnego endpointu /api/tenants
 
 import { NextResponse, NextRequest } from 'next/server';
-
-const tenants = [
-    { id: '1', name: 'Nike', floor: 1 },
-    { id: '2', name: 'Adidas', floor: 2 },
-    { id: '3', name: 'Zara', floor: 1 },
-]
+import { tenants } from './data';
 
 
 

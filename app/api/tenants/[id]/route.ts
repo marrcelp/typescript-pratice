@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const tenants = [
-    { id: '1', name: 'Nike', floor: 1 },
-    { id: '2', name: 'Adidas', floor: 2 },
-    { id: '3', name: 'Zara', floor: 1 },
-]
+import { tenants } from '../data';
 
 export async function GET (request: NextRequest, {params}: {params: Promise<{id: string}>}) {
     const {id} = await params;
