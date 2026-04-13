@@ -52,7 +52,7 @@ export async function PATCH (request: NextRequest, {params}: {params: Promise<{i
         )
     }
     
-    notice.isRead === true;
+    notice.isRead = true;
     notice.title = body.title ?? notice.title;
     notice.content = body.content ?? notice.content;
 
