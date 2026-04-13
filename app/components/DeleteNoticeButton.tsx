@@ -10,7 +10,7 @@ export function DeleteNoticeButton({id}: {id: string}) {
 
     async function handleDelete() {
 
-        const response = await fetch (`api/notices/${id}`, {method: 'DELETE'});
+        const response = await fetch (`/api/notices/${id}`, {method: 'DELETE'});
 
         if (response.ok){
             router.refresh();

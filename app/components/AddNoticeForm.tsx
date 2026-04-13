@@ -16,14 +16,13 @@ export function AddNoticeForm() {
         e.preventDefault();
         setIsLoading(true);
 
-        const response = await fetch('api/notices', {
+        const response = await fetch('/api/notices', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({title, content})
         });
 
         if (response.ok) {
-            e.preventDefault();
             setTitle('');
             setContent(''); 
             router.refresh();
@@ -48,7 +47,9 @@ export function AddNoticeForm() {
                 onChange={(e) => setContent(e.target.value)}
             />
 
-            <button type="submit">Dodaj</button>
+            <button type="submit" disabled={isLoading}>
+                {isLoading ? 'Dodawanie...' : 'Dodaj'}
+            </button>
         </form>
     )
 }

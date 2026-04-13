@@ -7,6 +7,6 @@ export function BackButton() {
     const router = useRouter();
 
     return (
-        <button style={{ border: '1px solid white', cursor: 'pointer' }} onClick={() => router.push('/tenants')}>Wróć</button>
+        <button style={{ border: '1px solid white', cursor: 'pointer' }} onClick={() => router.back()}>Wróć</button>
     )
 }
