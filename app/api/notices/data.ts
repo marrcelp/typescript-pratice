@@ -1,8 +1,8 @@
 export const notices = [
     {
     id: '1',
-    title: 'Ogloszenie 1',
-    content: 'ogloszenie 1 lorem ipsum ogloszenie 1 lorem ipsum ogloszenie 1 lorem ipsum ogloszenie 1 lorem ipsum ogloszenie 1 lorem ipsum',
+    title: 'Mycie garazu w dniu 24.04.26',
+    content: 'W centrum handlowym planowane jest mycie garazu podziemnego (-1), prosimy o nie parkowanie pojazdow w garazu w terminie 24.04.26',
     isRead: false,
     },
     {

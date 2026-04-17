@@ -1,12 +1,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { tenants } from "../tenants/data";
+import { notices } from "../notices/data";
 
 const client = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY
 })
 
-const tools = [{
+const tools = [
+{
     name: 'get_tenants',
     description: 'Pobiera liste wszystkich najemców centrum handlowego z ich piętrem',
     input_schema: {
@@ -14,7 +16,18 @@ const tools = [{
         properties: {},
         required: []
     }
-}]
+},
+{
+    name: 'get_notices',
+    description: 'Pobiera liste wszystkich ogłoszeń dotyczących centrum handlowego',
+    input_schema: {
+        type: 'object' as const,
+        properties: {},
+        required: []
+    }
+},
+
+]
 
 export async function POST (request: NextRequest) {
 
@@ -46,7 +59,13 @@ export async function POST (request: NextRequest) {
     if (response.stop_reason === 'tool_use'){
         const toolUse = response.content.find(b => b.type === 'tool_use');
 
-        const tenantsData = tenants;
+        let data;
+
+        if (toolUse!.name === 'get_tenants'){
+            data = tenants;
+        } else if (toolUse!.name === 'get_notices'){
+            data = notices;
+        }
 
         
         const finalResponse = await client.messages.create({
@@ -61,7 +80,7 @@ export async function POST (request: NextRequest) {
                     content: [{
                         type: 'tool_result',
                         tool_use_id: toolUse!.id,
-                        content: JSON.stringify(tenantsData)
+                        content: JSON.stringify(data)
                     }]
                 }
             ]
