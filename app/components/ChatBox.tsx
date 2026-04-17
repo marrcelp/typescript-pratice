@@ -59,8 +59,7 @@ export function ChatBox(){
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                className="input" 
+            <input 
                 type="text" 
                 placeholder="Wpisz swój prompt"
                 value={message}
