@@ -5,7 +5,7 @@ interface Notice {
     id: string,
     title: string,
     content: string,
-    isRead: boolean
+    is_read: boolean
 }
 
 export default async function NoticesPage(){
@@ -23,10 +23,10 @@ export default async function NoticesPage(){
             <h1>Ogłoszenia:</h1>
             <ul>{notices.map((notice: Notice) => 
                 <li key={notice.id}>
-                    <h2 style={{ color: notice.isRead ? 'white' : 'red' }}>{notice.title}</h2>
+                    <h2 style={{ color: notice.is_read ? 'white' : 'red' }}>{notice.title}</h2>
                     <p style={{ borderBottom: '1px solid white'}}>{notice.content}</p>
                     <DeleteNoticeButton id={notice.id} />
-                    <MarkAsReadButton id={notice.id} isRead={notice.isRead} />
+                    <MarkAsReadButton id={notice.id} isRead={notice.is_read} />
                 </li>)}
             </ul>
             <AddNoticeForm/>
