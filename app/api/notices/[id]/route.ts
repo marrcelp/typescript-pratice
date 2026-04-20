@@ -103,7 +103,7 @@ export async function PATCH (request: NextRequest, {params}: {params: Promise<{i
 
     const {data, error} = await supabase
         .from('notices')
-        .update({title: body.title, content: body.content})
+        .update({title: body.title, content: body.content, is_read: true})
         .eq('id', id)
 
     if (error) {
