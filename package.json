@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-embeddings": "npx ts-node --skip-project --esm scripts/generate-embeddings.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.88.0",
+    "@anthropic-ai/sdk": "^0.90.0",
     "@supabase/supabase-js": "^2.104.0",
     "axios": "^1.14.0",
+    "dotenv": "^17.4.2",
     "next": "16.2.0",
     "open": "^11.0.0",
     "react": "19.2.4",
