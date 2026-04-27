@@ -45,5 +45,29 @@ export async function POST(request: NextRequest){
     const context = notices
         .map((n: { title: string, content: string}) => `${n.title}: ${n.content}`)
         .join('\n\n');
+
+
+    const response = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+            max_tokens: 1024,
+            system: `Jesteś pomocnym asystentem centrum handlowego.
+                    Odpowiadaj zawsze po polsku.
+                    Odpowiadaj tylko na podstawie poniższych ogłoszeń. 
+                    Jeśli odpowiedź nie wynika z ogłoszeń, powiedz że nie masz takiej informacji.
+                        
+                    Ogłoszenia:
+                    ${context}`,
+            messages: [{ role: 'user', content: userPrompt }]
+    })
+
+
+    return NextResponse.json({
+        reply: (response.content[0] as Anthropic.TextBlock).text,
+        sources: notices.map((n: {title: string, similarity: number}) => ({
+            title: n.title,
+            similarity: n.similarity
+        }))
+    })
 }
-// O CO TU CHODZI? ^
+
+
