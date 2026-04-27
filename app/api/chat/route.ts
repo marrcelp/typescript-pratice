@@ -1,86 +1,79 @@
 import { NextResponse, NextRequest } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { tenants } from "../tenants/data";
-import { notices } from "../notices/data";
+import { supabase } from "@/lib/supabase";
 
-const client = new Anthropic({
+const anthropic = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY
 })
 
-const tools = [
-{
-    name: 'get_tenants',
-    description: 'Pobiera liste wszystkich najemców centrum handlowego z ich piętrem',
-    input_schema: {
-        type: 'object' as const,
-        properties: {},
-        required: []
+const tools: Anthropic.Tool[] = [
+    {
+        name: 'get_tenants',
+        description: 'Pobiera listę wszystkich najemców centrum handlowego wraz z piętrem',
+        input_schema: { type: 'object', properties: {}, required: [] }
+    },
+    {
+        name: 'get_notices',
+        description: 'Pobiera aktywne ogłoszenia centrum handlowego',
+        input_schema: { type: 'object', properties: {}, required: [] }
+    },
+    {
+        name: 'get_events',
+        description: 'Pobiera nadchodzące wydarzenia w centrum handlowym',
+        input_schema: { type: 'object', properties: {}, required: [] }
+    },
+    {
+        name: 'get_parking',
+        description: 'Pobiera informacje o parkingach w centrum handlowym',
+        input_schema: { type: 'object', properties: {}, required: [] }
     }
-},
-{
-    name: 'get_notices',
-    description: 'Pobiera liste wszystkich ogłoszeń dotyczących centrum handlowego',
-    input_schema: {
-        type: 'object' as const,
-        properties: {},
-        required: []
-    }
-},
+];
 
-]
+async function runTool(toolName: string){
+
+    const { data } = await supabase.from(
+        toolName === 'get_tenants' ? 'tenants' : 
+        toolName === 'get_notices' ? 'notices' : 
+        toolName === 'get_events' ? 'events' : 'parking'
+    ).select('*');
+
+    return data;
+}
 
 export async function POST (request: NextRequest) {
 
     const body = await request.json();
 
-    // const stream = client.messages.stream({
-    //     model: 'claude-haiku-4-5-20251001',
-    //     max_tokens: 1024,
-    //     messages: body.messages,
-    //     system: `Jesteś pomocnym asystentem centrum handlowego.
-    //             Odpowiadaj zawsze po polsku.
-    //             Oto lista sklepów w centrum:
-    //             - Nike (piętro 1)
-    //             - Adidas (piętro 2)
-    //             - Zara (piętro 1)
-    //             Pomagaj klientom znaleźć sklepy i odpowiadaj na pytania o centrum.`
-    // })
+    const messages: Anthropic.MessageParam[] = body.messages;
 
-    const response = await client.messages.create({
+    const response = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 1024,
-        messages: body.messages,
         tools: tools,
-        system: `Jesteś pomocnym asystentem centrum handlowego.
+        system: `Jesteś pomocnym asystentem centrum handlowego MallAssistant.
                 Odpowiadaj zawsze po polsku.
-                Pomagaj klientom znaleźć sklepy i odpowiadaj na pytania o centrum.`
+                Pomagaj klientom znaleźć sklepy, sprawdzić ogłoszenia, wydarzenia i parking.
+                Używaj dostępnych narzędzi żeby pobierać aktualne dane.`,
+        messages
     })
 
     if (response.stop_reason === 'tool_use'){
-        const toolUse = response.content.find(b => b.type === 'tool_use');
-
-        let data;
-
-        if (toolUse!.name === 'get_tenants'){
-            data = tenants;
-        } else if (toolUse!.name === 'get_notices'){
-            data = notices;
-        }
-
+        const toolUse = response.content.find(stop => stop.type === 'tool_use') as Anthropic.ToolUseBlock;
+        const toolResult = await runTool(toolUse.name);
         
-        const finalResponse = await client.messages.create({
+        const finalResponse = await anthropic.messages.create({
             model: 'claude-haiku-4-5-20251001',
             max_tokens: 1024,
             tools: tools,
             messages: [
-                ...body.messages,
+                ...messages,
                 { role: 'assistant', content: response.content },
                 { 
                     role: 'user', 
                     content: [{
                         type: 'tool_result',
                         tool_use_id: toolUse!.id,
-                        content: JSON.stringify(data)
+                        content: JSON.stringify(toolResult)
                     }]
                 }
             ]
@@ -96,19 +89,3 @@ export async function POST (request: NextRequest) {
     });
 }
 
-    // const readableStream = new ReadableStream({
-    //     async start(controller) {
-    //         for await (const chunk of stream) {
-
-    //             if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-    //                 controller.enqueue(chunk.delta.text);
-    //             }
-    //         }
-    //         controller.close();
-    //     }
-    // });
-
-    // return new Response(readableStream, {
-    //     headers: {'Content-Type': 'text/plain; charset=utf-8'}
-    // })
-// }
