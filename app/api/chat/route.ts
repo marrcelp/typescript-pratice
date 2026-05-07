@@ -14,7 +14,7 @@ const tools: Anthropic.Tool[] = [
     },
     {
         name: 'get_notices',
-        description: 'Pobiera aktywne ogłoszenia centrum handlowego',
+        description: 'Pobiera ogłoszenia centrum handlowego. Używaj gdy użytkownik pyta o aktualności, harmonogramy prac, mycie garażu, przeglądy techniczne, utrudnienia, zamknięcia lub inne bieżące informacje operacyjne.',
         input_schema: { type: 'object', properties: {}, required: [] }
     },
     {
